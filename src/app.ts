@@ -69,6 +69,17 @@ class ProjectState extends State<Project> {
   }
 }
 const projectState = ProjectState.getInstance();
+// Drag and drop interface
+interface Dragable{
+  dragStarthandler(event:DragEvent):void;
+  dragEndhandler(event:DragEvent):void;
+  
+}
+interface Dragtarget{
+  dragOverhandler(event:DragEvent):void;
+  drophandler(event:DragEvent):void;
+  dragLeavehandler(event:DragEvent):void;
+}
 // Project Type
 enum ProjectStatus {
   Active,
@@ -142,7 +153,7 @@ function autobind(
   return ajDescriptor;
 }
 // ProjectItem Class
-class ProjectItem extends Component<HTMLUListElement, HTMLLIElement> {
+class ProjectItem extends Component<HTMLUListElement, HTMLLIElement> implements Dragable {
   private project: Project;
   get persons() {
     if (this.project.people === 1) {
@@ -157,7 +168,19 @@ class ProjectItem extends Component<HTMLUListElement, HTMLLIElement> {
     this.configure();
     this.renderContent();
   }
-  configure() {}
+  @autobind
+  dragStarthandler(event:Event){
+    console.log("Start:",event);
+  }
+
+  @autobind
+  dragEndhandler(event:Event){
+    console.log("END:",event);
+  }
+  configure() {
+    this.element.addEventListener("dragstart",this.dragStarthandler);
+    this.element.addEventListener("dragend",this.dragEndhandler);
+  }
   renderContent() {
     this.element.querySelector("h2")!.textContent = this.project.title;
     this.element.querySelector("h3")!.textContent = this.persons + " assigned";
