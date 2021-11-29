@@ -1,4 +1,3 @@
-namespace  App{
 // autobin Decorator
 export function autobind(
     target: any,
@@ -15,5 +14,4 @@ export function autobind(
     };
     return ajDescriptor;
   }
-}
   
