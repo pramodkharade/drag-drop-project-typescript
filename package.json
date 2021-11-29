@@ -4,9 +4,8 @@
   "description": "typescript with nodejs dummy project",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "lite-server"
-
+    "start": "lite-server",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -19,7 +18,7 @@
   },
   "homepage": "https://github.com/pramodkharade/drag-drop-project-typescript#readme",
   "devDependencies": {
-    "light-server": "^2.9.1",
+    "lite-server": "^2.6.1",
     "typescript": "^4.5.2"
   }
 }
