@@ -63,6 +63,16 @@ class ProjectState extends State<Project> {
       ProjectStatus.Active
     );
     this.projects.push(newProject);
+    this.updateListeners();
+  }
+  moveProject(projectId: string,newStatus:ProjectStatus){
+    const matchProject = this.projects.find(project=>project.id===projectId);
+    if(matchProject && matchProject.status !==newStatus){
+      matchProject.status = newStatus;
+      this.updateListeners();
+    }
+  }
+  private updateListeners(){
     for (const listenerFn of this.listeners) {
       listenerFn(this.projects.slice());
     }
@@ -202,7 +212,7 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement> implements Drag
   }
   @autobind
   dragOverhandler(event:DragEvent){
-    if(event.dataTransfer && event.dataTransfer?.types[0]==="text/plain"){
+    if(event.dataTransfer && event.dataTransfer.types[0]==="text/plain"){
       event.preventDefault();
       const listEl = this.element.querySelector("ul")!;
       listEl.classList.add('droppable');
@@ -215,7 +225,9 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement> implements Drag
   }
   @autobind
   drophandler(event:DragEvent){
-
+const projId = event.dataTransfer!.getData("text/plain");
+projectState.moveProject(projId,this.type==="active" ?ProjectStatus.Active: ProjectStatus.Finished);
+console.log(" Project ID:",projId);
   }
   private renderProjects() {
     const listEl = document.getElementById(
@@ -232,7 +244,7 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement> implements Drag
   configure() {
     this.element.addEventListener("dragover",this.dragOverhandler);
     this.element.addEventListener("dragleave",this.dragLeavehandler);
-    this.element.addEventListener("drag",this.drophandler);
+    this.element.addEventListener("drop",this.drophandler);
     projectState.addListner((projects: Project[]) => {
       const relevantProjects = projects.filter((proj) => {
         if (this.type === "active") {
