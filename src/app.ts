@@ -73,9 +73,17 @@ class ProjectList {
     this.element = importedNode.firstElementChild as HTMLElement;
     this.element.id = `${this.type}-projects`;
     this.attach();
+    this.renderContent();
   }
   private attach() {
     this.hostElement.insertAdjacentElement("beforeend", this.element);
+  }
+  private renderContent() {
+    const listId = `${this.type}-projects-list`;
+    this.element.querySelector("ul")!.id = listId;
+    this.element.querySelector(
+      "h2"
+    )!.textContent = `${this.type.toUpperCase()}-PROJECTS`;
   }
 }
 
@@ -162,3 +170,5 @@ class ProjectInput {
   }
 }
 let prjOb = new ProjectInput();
+let activePrj = new ProjectList("active");
+let finshedPrj = new ProjectList("finished");
