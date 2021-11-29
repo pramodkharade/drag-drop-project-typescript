@@ -33,12 +33,19 @@ abstract class Component<T extends HTMLElement, U extends HTMLElement> {
   abstract renderContent(): void;
 }
 //Project state Management
-type Listener = (items: Project[]) => void;
-class ProjectState {
-  private listeners: Listener[] = [];
+type Listener<T> = (items: T[]) => void;
+class State<T> {
+  protected listeners: Listener<T>[] = [];
+  addListner(listenerFn: Listener<T>) {
+    this.listeners.push(listenerFn);
+  }
+}
+class ProjectState extends State<Project> {
   private projects: Project[] = [];
   private static instance: ProjectState;
-  private constructor() {}
+  private constructor() {
+    super();
+  }
   static getInstance() {
     if (this.instance) {
       return this.instance;
@@ -46,9 +53,7 @@ class ProjectState {
     this.instance = new ProjectState();
     return this.instance;
   }
-  addListner(listenerFn: Listener) {
-    this.listeners.push(listenerFn);
-  }
+
   addProject(title: string, description: string, numberofpeople: number) {
     const newProject = new Project(
       Math.random().toString(),
