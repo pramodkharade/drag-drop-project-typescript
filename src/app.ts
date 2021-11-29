@@ -1,4 +1,7 @@
-// Generic or Base class
+/// <reference path="drag-drop-interfaces.ts" />
+/// <reference path="project-model.ts" />
+namespace App{
+  // Generic or Base class
 abstract class Component<T extends HTMLElement, U extends HTMLElement> {
   templateElement: HTMLTemplateElement;
   hostElement: T;
@@ -90,20 +93,7 @@ interface Dragtarget{
   drophandler(event:DragEvent):void;
   dragLeavehandler(event:DragEvent):void;
 }
-// Project Type
-enum ProjectStatus {
-  Active,
-  Finished,
-}
-class Project {
-  constructor(
-    public id: string,
-    public title: string,
-    public description: string,
-    public people: number,
-    public status: ProjectStatus
-  ) {}
-}
+
 // validation interface as data type
 interface validatable {
   value: string | number;
@@ -334,6 +324,8 @@ class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
   }
   renderContent() {}
 }
-let prjOb = new ProjectInput();
-let activePrj = new ProjectList("active");
-let finshedPrj = new ProjectList("finished");
+new ProjectInput();
+new ProjectList("active");
+new ProjectList("finished");
+
+}
