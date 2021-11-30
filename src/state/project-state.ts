@@ -1,4 +1,4 @@
-import {Project,ProjectStatus} from "../models/project.js";
+import { Project, ProjectStatus } from "../models/project";
 //Project state Management
 type Listener<T> = (items: T[]) => void;
 class State<T> {
@@ -7,7 +7,7 @@ class State<T> {
     this.listeners.push(listenerFn);
   }
 }
- export class ProjectState extends State<Project> {
+export class ProjectState extends State<Project> {
   private projects: Project[] = [];
   private static instance: ProjectState;
   private constructor() {
@@ -32,14 +32,16 @@ class State<T> {
     this.projects.push(newProject);
     this.updateListeners();
   }
-  moveProject(projectId: string,newStatus:ProjectStatus){
-    const matchProject = this.projects.find(project=>project.id===projectId);
-    if(matchProject && matchProject.status !==newStatus){
+  moveProject(projectId: string, newStatus: ProjectStatus) {
+    const matchProject = this.projects.find(
+      (project) => project.id === projectId
+    );
+    if (matchProject && matchProject.status !== newStatus) {
       matchProject.status = newStatus;
       this.updateListeners();
     }
   }
-  private updateListeners(){
+  private updateListeners() {
     for (const listenerFn of this.listeners) {
       listenerFn(this.projects.slice());
     }
